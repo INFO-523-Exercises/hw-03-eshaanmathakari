@@ -1,0 +1,76 @@
+---
+title: "hw-03-eshaanmathakari"
+format: html
+editor: visual
+execute:
+  warning: false
+  error: false
+author: Eshaan Mathakari
+---
+
+## Installing necessary libraries
+
+```{r warning=FALSE}
+if(!require(pacman))
+  install.packages("pacman")
+install.packages("RWeka")
+pacman::p_load(
+  C50,                # C5.0 Decision Trees and Rule-Based Models
+  caret,              # Classification and Regression Training
+  e1071,              # Misc Functions of the Department of Statistics (e1071), TU Wien
+  keras,              # R Interface to 'Keras'
+  kernlab,            # Kernel-Based Machine Learning Lab
+  lattice,            # Trellis Graphics for R
+  MASS,               # Support Functions and Datasets for Venables and Ripley's MASS
+  mlbench,            # Machine Learning Benchmark Problems
+  nnet,               # Feedforward Neural Networks and Multinomial Log-Linear Models
+  palmerpenguins,     # Palmer Archipelago (Antarctica) Penguin Data
+  party,              # A Laboratory for Recursive Partytioning
+  partykit,           # A Toolkit for Recursive Partytioning
+  randomForest,       # Breiman and Cutler's Random Forests for Classification and Regression
+  rpart,              # Recursive partitioning models
+  RWeka,              # R/Weka Interface
+  scales,             # Scale Functions for Visualization
+  tidymodels,         # Tidy machine learning framework
+  tidyverse,          # Tidy data wrangling and visualization
+  xgboost             # Extreme Gradient Boosting
+)
+
+```
+
+```{r warning=FALSE}
+options(digits = 3)
+```
+
+## Loading the dataset
+
+```{r warning=FALSE}
+spam <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-15/spam.csv')
+spam |> glimpse()
+```
+
+```{r}
+set.seed(123)  # for reproducibility
+inTrain <- createDataPartition(y = spam$make, p = .8)[[1]]
+spam_train <- dplyr::slice(spam, inTrain)
+spam_test <- dplyr::slice(spam, -inTrain)
+```
+
+## Fitting different Models to our Training Data
+
+```{r}
+train_index <- createFolds(spam_train$make, k = 10)
+```
+
+## Implementing Decision Tree Algorithm
+
+```{r}
+spam_train_matrix <- as.matrix(spam_train)
+ctreeFit <- train(type ~ .,
+                  method = "ctree",
+                  data = spam_train_matrix,  # Use the matrix format
+                  tuneLength = 5,
+                  trControl = trainControl(method = "cv", indexOut = train_index))
+
+ctreeFit
+```
