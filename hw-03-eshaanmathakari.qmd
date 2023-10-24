@@ -1,5 +1,5 @@
 ---
-title: "hw-03-eshaanmathakari"
+title: "hw-03-01-eshaanmathakari"
 format: html
 editor: visual
 execute:
@@ -7,34 +7,15 @@ execute:
   error: false
 author: Eshaan Mathakari
 ---
+## Classification: Basic Concepts and Techniques
 
-## Installing necessary libraries
-
+### Installing necessary libraries
 ```{r warning=FALSE}
 if(!require(pacman))
   install.packages("pacman")
-install.packages("RWeka")
-pacman::p_load(
-  C50,                # C5.0 Decision Trees and Rule-Based Models
-  caret,              # Classification and Regression Training
-  e1071,              # Misc Functions of the Department of Statistics (e1071), TU Wien
-  keras,              # R Interface to 'Keras'
-  kernlab,            # Kernel-Based Machine Learning Lab
-  lattice,            # Trellis Graphics for R
-  MASS,               # Support Functions and Datasets for Venables and Ripley's MASS
-  mlbench,            # Machine Learning Benchmark Problems
-  nnet,               # Feedforward Neural Networks and Multinomial Log-Linear Models
-  palmerpenguins,     # Palmer Archipelago (Antarctica) Penguin Data
-  party,              # A Laboratory for Recursive Partytioning
-  partykit,           # A Toolkit for Recursive Partytioning
-  randomForest,       # Breiman and Cutler's Random Forests for Classification and Regression
-  rpart,              # Recursive partitioning models
-  RWeka,              # R/Weka Interface
-  scales,             # Scale Functions for Visualization
-  tidymodels,         # Tidy machine learning framework
-  tidyverse,          # Tidy data wrangling and visualization
-  xgboost             # Extreme Gradient Boosting
-)
+
+pacman::p_load(tidyverse, rpart, rpart.plot, caret, 
+  lattice, FSelector, sampling, pROC, mlbench)
 
 ```
 
@@ -42,35 +23,37 @@ pacman::p_load(
 options(digits = 3)
 ```
 
-## Loading the dataset
-
+### Loading the dataset
 ```{r warning=FALSE}
-spam <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-15/spam.csv')
-spam |> glimpse()
+childcare_costs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')
+counties <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')
+childcare_costs |> glimpse()
 ```
 
 ```{r}
-set.seed(123)  # for reproducibility
-inTrain <- createDataPartition(y = spam$make, p = .8)[[1]]
-spam_train <- dplyr::slice(spam, inTrain)
-spam_test <- dplyr::slice(spam, -inTrain)
+childcare_costs <- childcare_costs |>
+  mutate(across(where(is.logical), factor, levels = c(TRUE, FALSE))) |>
+  mutate(across(where(is.character), factor))
 ```
 
-## Fitting different Models to our Training Data
+### Fitting different Models to our Training Data
+```{r}
+summary(childcare_costs)
+```
+### Implementing Decision Trees
+```{r}
+library(rpart)
+childcare_costs_matrix <- as.matrix.default(childcare_costs)
+```
 
 ```{r}
-train_index <- createFolds(spam_train$make, k = 10)
+tree_default <- childcare_costs_matrix |> 
+  rpart(type ~ ., data = _)
+tree_default
 ```
 
-## Implementing Decision Tree Algorithm
 
-```{r}
-spam_train_matrix <- as.matrix(spam_train)
-ctreeFit <- train(type ~ .,
-                  method = "ctree",
-                  data = spam_train_matrix,  # Use the matrix format
-                  tuneLength = 5,
-                  trControl = trainControl(method = "cv", indexOut = train_index))
 
-ctreeFit
-```
+
+
+
