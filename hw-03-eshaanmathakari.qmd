@@ -1,5 +1,5 @@
 ---
-title: "hw-03-01-eshaanmathakari"
+title: "hw-03-eshaanmathakari"
 format: html
 editor: visual
 execute:
@@ -223,6 +223,7 @@ set.seed(2000)
 ### Hold out Test Data
 
 Test data is not used in the model building process and set aside purely for testing the model. Here, we partition data the 80% training and 20% testing.
+
 ```{r warning=FALSE}
 # Create a data partition
 inTrain <- createDataPartition(y = artists$book, p = .8, list = FALSE)
@@ -281,6 +282,7 @@ edition_number has the highest importance score, represented as 100.00. year has
 ## Testing: Confusion Matrix and Confidence Interval for Accuracy
 
 Use the best model on the test data
+
 ```{r}
 # Make predictions on test data
 pred <- predict(fit, newdata = artists_test)
@@ -297,6 +299,7 @@ The accuracy is `1.0`,Sensitivity (True Positive Rate) and Specificity (True Neg
 ## Model Comparison
 
 We will compare decision trees with a `k-nearest neighbors (kNN)` classifier. We will create fixed sampling scheme (10-folds) so we compare the different models using exactly the same folds. It is specified as `trControl` during training.
+
 ```{r}
 # Create cross-validation folds
 train_index <- createFolds(artists_train$book, k = 10)
@@ -378,6 +381,7 @@ weights
 ```
 
 Provides insight into the importance of each feature in predicting the `book` categories and can help in feature selection or understanding which features are most relevant in the classification task.
+
 ```{r}
 ggplot(weights,
   aes(x = attr_importance, y = reorder(feature, attr_importance))) +
@@ -387,13 +391,14 @@ ggplot(weights,
 ```
 
 `year` has the highest importance score , indicating that it is a significant predictor and 'edition_number' follows with a relatively high importance score.
+
 ```{r}
 subset <- cutoff.k(weights |> 
                    column_to_rownames("feature"), 5)
 subset
 ```
-Getting the 5 best features
-Use only the best 5 features to build a model (`Fselector` provides `as.simple.formula`)
+
+Getting the 5 best features Use only the best 5 features to build a model (`Fselector` provides `as.simple.formula`)
 
 ```{r}
 f <- as.simple.formula(subset, "book")
@@ -414,7 +419,6 @@ artists_train |>
   arrange(desc(attr_importance))
 ```
 
-
 ### Feature Subset Selection
 
 Often features are related and calculating importance for each feature independently is not optimal.
@@ -427,6 +431,7 @@ artists_train |>
 `edition_number` and `year` are the two predictor variables selected by the CFS method.
 
 `Black`-box feature selection uses an evaluator function (the black box) to calculate a score to be maximized. We define an evaluation function that builds a model given a subset of features and calculates a quality score.
+
 ```{r}
 evaluator <- function(subset) {
   model <- artists_train|> 
@@ -695,10 +700,10 @@ confusionMatrix(data = predict(fit, testing_artists),
                 ref = testing_artists$book, positive = "Janson")
 ```
 
-
 # Classification: Alternative Techniques
 
 ## Install packages
+
 ```{r}
 if(!require(pacman))
   install.packages("pacman")
@@ -727,6 +732,7 @@ pacman::p_load(
 ```
 
 Show fewer digits
+
 ```{r}
 options(digits=3)
 ```
@@ -734,6 +740,7 @@ options(digits=3)
 ## Training and Test Data
 
 We will use artists data set:
+
 ```{r}
 artists <- as.data.frame(artists)
 artists |> glimpse()
@@ -751,6 +758,7 @@ artists_test <- dplyr::slice(artists, -inTrain)
 ```{r}
 train_index <- createFolds(artists_train$book, k = 10)
 ```
+
 ### Conditional Inference Tree (Decision Tree)
 
 Conditional Inference Trees is a different kind of decision tree that uses recursive partitioning of dependent variables based on the value of correlations.
@@ -771,6 +779,7 @@ plot(ctreeFit$finalModel)
 The conditional inference tree model performed very well in terms of accuracy and kappa, and the hyperparameter `mincriterion` was set to 0.99 to achieve this level of performance.
 
 ### C 4.5 Decision Tree
+
 ```{r}
 # Train a C4.5-like decision tree (J48) classification model
 C45Fit <- artists_train |> train(book ~ .,
@@ -788,6 +797,7 @@ C45Fit$finalModel
 ```
 
 ### K-Nearest Neighbors
+
 ```{r warning=FALSE}
 # Train a k-Nearest Neighbors (k-NN) classification model
 knnFit <- artists_train |> train(book ~ .,
@@ -841,6 +851,7 @@ svmFit$finalModel
 ```
 
 ### Random Forest
+
 ```{r}
 # Train a Random Forest classification model
 randomForestFit <- artists_train |> train(book ~ .,
@@ -850,12 +861,15 @@ randomForestFit <- artists_train |> train(book ~ .,
     trControl = trainControl(method = "cv", indexOut = train_index))
 randomForestFit
 ```
+
 Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that operates by constructing a multitude of decision trees at training time.
+
 ```{r}
 randomForestFit$finalModel
 ```
 
 ### Gradient Boosted Decision Trees (xgboost)
+
 ```{r}
 # Train a classification model using the XGBoost algorithm
 xgboostFit <- artists_train |> train(book ~ .,
@@ -878,9 +892,11 @@ xgboostFit
 ```{r}
 xgboostFit$finalModel
 ```
+
 Gradient-boosted decision trees are a popular method for addressing prediction problems in the regression and classification domains. The strategy improves learning by simplifying the objective and reducing the number of iterations required to arrive at a properly optimal solution.
 
 ### Artificial Neural Network
+
 ```{r}
 nnetFit <- artists_train |> train(book ~ .,
   method = "nnet",
@@ -896,6 +912,7 @@ nnetFit$finalModel
 ```
 
 ## **Comparing Models**
+
 ```{r}
 resamps <- resamples(list(
   ctree = ctreeFit,
@@ -909,6 +926,7 @@ resamps <- resamples(list(
     ))
 resamps
 ```
+
 Note: To collect the performance metrics from the models trained on the same data.
 
 ```{r}
@@ -936,6 +954,7 @@ summary(difs)
 The small p-values for both Accuracy and Kappa comparisons mean that there is a significant difference in performance between the CART and k-NN models.
 
 ## Applying the Chosen Model to the Test Data
+
 ```{r}
 pr <- predict(xgboostFit, artists_test)
 ```
@@ -945,6 +964,7 @@ confusionMatrix(pr, reference = artists_test$book)
 ```
 
 ## Comparing Decision Boundaries of Popular Classification Techniques
+
 ```{r}
 library(scales)
 library(tidyverse)
@@ -1017,14 +1037,17 @@ decisionplot <- function(model, data, class_var,
      theme_minimal(base_size = 14)
 }
 ```
+
 To differentiate between classes, classifiers generate decision boundaries. Certain classifiers may work better for particular datasets because different classifiers can provide decision boundaries with varying geometries (some are completely linear, for example).
 
 ### The Artist Dataset
+
 ```{r}
 ### Three classes 
 ### (note: MASS also has a select function which hides dplyr's select)
 x <- artists |> dplyr::select(edition_number, year, book)
 ```
+
 We're going to stick with the same dataset and use `edition_number`, `year`, and `book` as our parameters.
 
 ```{r}
@@ -1039,6 +1062,7 @@ ggplot(x, aes(x = edition_number, y = year, fill = book)) +
 ```
 
 #### K-Nearest Neighbors Classifier
+
 ```{r}
 model <- x |> caret::knn3(book ~ ., data = _, k = 1)
 decisionplot(model, x, class_var = "book") + 
@@ -1048,6 +1072,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+
 set the number of nearest neighbors to 1
 
 ```{r}
@@ -1059,6 +1084,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+
 set the number of nearest neighbors to 3
 
 ```{r}
@@ -1070,9 +1096,11 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+
 set the number of nearest neighbors to 9
 
 #### Naive Bayes Classifier
+
 ```{r}
 model <- x |> e1071::naiveBayes(book ~ ., data = _)
 decisionplot(model, x, class_var = "book", 
@@ -1085,6 +1113,7 @@ decisionplot(model, x, class_var = "book",
 ```
 
 #### Linear Discriminant Analysis
+
 ```{r}
 model <- x |> MASS::lda(book ~ ., data = _)
 decisionplot(model, x, class_var = "book") + 
@@ -1094,13 +1123,15 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+
 Linear Discriminant Analysis (LDA) is a supervised learning algorithm used for classification tasks in machine learning. It is a technique used to find a linear combination of features that best separates the classes in a dataset.
 
-
 #### Multinomial Logistic Regression (implemented in nnet)
+
 ```{r}
 model <- x |> nnet::multinom(book ~., data = _)
 ```
+
 Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
 
 ```{r}
@@ -1113,6 +1144,7 @@ decisionplot(model, x, class_var = "book") +
 ```
 
 #### Decision Trees
+
 ```{r}
 model <- x |> rpart::rpart(book ~ ., data = _)
 decisionplot(model, x, class_var = "book") + 
@@ -1157,6 +1189,7 @@ decisionplot(model, x, class_var = "book") +
 ```
 
 #### SVM
+
 ```{r}
 model <- x |> e1071::svm(book ~ ., data = _, kernel = "linear")
 decisionplot(model, x, class_var = "book") + 
@@ -1166,6 +1199,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+
 SVM algorithms are very effective as we try to find the maximum separating hyperplane between the different classes available in the target feature.
 
 ```{r}
@@ -1199,6 +1233,7 @@ decisionplot(model, x, class_var = "book") +
 ```
 
 #### Single Layer Feed-forward Neural Networks
+
 ```{r}
 model <-x |> nnet::nnet(book ~ ., data = _, size = 1, trace = FALSE)
 decisionplot(model, x, class_var  = "book", 
@@ -1233,3 +1268,169 @@ decisionplot(model, x, class_var  = "book",
 ```
 
 `size` specifies that the neural network should have how many hidden neurons in a single hidden layer.
+
+### Circle Dataset
+
+This set is not linearly separable!
+
+```{r }
+set.seed(1000)
+
+x <- mlbench::mlbench.circle(500)
+###x <- mlbench::mlbench.cassini(500)
+###x <- mlbench::mlbench.spirals(500, sd = .1)
+###x <- mlbench::mlbench.smiley(500)
+x <- cbind(as.data.frame(x$x), factor(x$classes))
+colnames(x) <- c("x", "y", "class")
+x <- as_tibble(x)
+x
+
+ggplot(x, aes(x = x, y = y, color = class)) + 
+  geom_point() +
+  theme_minimal(base_size = 14)
+```
+
+#### K-Nearest Neighbors Classifier
+
+```{r }
+model <- x |> caret::knn3(class ~ ., data = _, k = 1)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "kNN (1 neighbor)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <- x |> caret::knn3(class ~ ., data = _, k = 10)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "kNN (10 neighbor)",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+#### Naive Bayes Classifier
+
+```{r }
+model <- x |> e1071::naiveBayes(class ~ ., data = _)
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + 
+  labs(title = "naive Bayes",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+#### Linear Discriminant Analysis
+
+LDA cannot find a good model since the true decision boundary is not linear.
+
+```{r }
+model <- x |> MASS::lda(class ~ ., data = _)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "LDA",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+#### Logistic Regression (implemented in nnet)
+
+Multinomial logistic regression is an extension of logistic regression to problems with more than two classes. It also tries to find a linear decision boundary.
+
+```{r }
+model <- x |> nnet::multinom(class ~., data = _)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "Multinomial Logistic Regression",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+#### Decision Trees
+
+```{r }
+model <- x |> rpart::rpart(class ~ ., data = _)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "CART",
+       shape = "Class",
+       fill = "Prediction")
+
+model <- x |> rpart::rpart(class ~ ., data = _,
+  control = rpart.control(cp = 0.001, minsplit = 1))
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "CART (overfitting)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <- x |> C50::C5.0(class ~ ., data = _)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "C5.0",
+       shape = "Class",
+       fill = "Prediction")
+
+library(randomForest)
+model <- x |> randomForest(class ~ ., data = _)
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "Random Forest",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+#### SVM
+
+Linear SVM does not work for this data.
+
+```{r }
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "linear")
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "SVM (linear kernel)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "radial")
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "SVM (radial kernel)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "polynomial")
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "SVM (polynomial kernel)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "sigmoid")
+decisionplot(model, x, class_var = "class") + 
+  labs(title = "SVM (sigmoid kernel)",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+#### Single Layer Feed-forward Neural Networks
+
+```{r }
+model <-x |> nnet::nnet(class ~ ., data = _, size = 1, trace = FALSE)
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class")) + 
+  labs(title = "NN (1 neuron)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <-x |> nnet::nnet(class ~ ., data = _, size = 2, trace = FALSE)
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class")) + 
+  labs(title = "NN (2 neurons)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <-x |> nnet::nnet(class ~ ., data = _, size = 4, trace = FALSE)
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class")) + 
+  labs(title = "NN (4 neurons)",
+       shape = "Class",
+       fill = "Prediction")
+
+model <-x |> nnet::nnet(class ~ ., data = _, size = 10, trace = FALSE)
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class")) + 
+  labs(title = "NN (10 neurons)",
+       shape = "Class",
+       fill = "Prediction")
+```
+
+
