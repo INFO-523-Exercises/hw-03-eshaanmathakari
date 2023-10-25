@@ -102,9 +102,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <section id="classification-basic-concepts-and-techniques" class="level1">
-<h1><strong>Classification: Basic Concepts and Techniques</strong></h1>
+<h1>Classification: Basic Concepts and Techniques</h1>
 <section id="install-packages" class="level2">
-<h2 class="anchored" data-anchor-id="install-packages"><strong>Install packages</strong></h2>
+<h2 class="anchored" data-anchor-id="install-packages">Install packages</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(pacman))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
@@ -112,25 +112,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, rpart, rpart.plot, caret, </span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  lattice, sampling, pROC, mlbench)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="art-history-data" class="level2">
-<h2 class="anchored" data-anchor-id="art-history-data">Art History Data</h2>
-<p>The data was collected to assess the demographic representation of artists through editions of Janson’s History of Art and Gardner’s Art Through the Ages, two of the most popular art history textbooks used in the American education system.</p>
-<p>Here is a basic summary of the provided data columns:</p>
-<p><strong>artist_name</strong>: The name of the artist.</p>
-<p><strong>edition_number</strong>: The edition number associated with the artwork.</p>
-<p><strong>year</strong>: The year when the artwork was created.</p>
-<p><strong>artist_nationality</strong>: The nationality of the artist.</p>
-<p><strong>artist_nationality_other</strong>: Additional information about the artist’s nationality (if applicable).</p>
-<p><strong>artist_gender</strong>: The gender of the artist (e.g., Male or Female).</p>
-<p><strong>artist_race</strong>: The racial background or ethnicity of the artist (e.g., Black or African American, White).</p>
-<p><strong>artist_ethnicity</strong>: The artist’s ethnicity, specifying whether they are of Hispanic or Latino origin.</p>
-<p><strong>book</strong>: The name of the book or collection to which the artwork belongs.</p>
-<p><strong>space_ratio_per_page_total</strong>: A ratio representing the space occupied by the artwork on a page in the book.</p>
-<p><strong>artist_unique_id</strong>: An identifier associated with the artist.</p>
-<p><strong>moma_count_to_year</strong>: The count related to the Museum of Modern Art (MoMA) up to a specific year.</p>
-<p><strong>whitney_count_to_year</strong>: The count related to the Whitney Museum up to a specific year.</p>
-<p><strong>artist_race_nwi</strong>: The artist’s race or ethnicity, with “Non-White” or “White” as the options.</p>
 <p>The data includes information about various artists, their artworks, and related details, such as their gender, nationality, race, and the museums where their work is counted.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>artists <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-01-17/artists.csv"</span>)</span>
@@ -151,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #   whitney_count_to_year &lt;dbl&gt;, artist_race_nwi &lt;chr&gt;</code></pre>
 </div>
 </div>
-<p>A <strong>tibble</strong> is a data structure in R, part of the tidyverse ecosystem, that is designed to make data manipulation and analysis easier and more consistent. It is an enhanced and modern alternative to the traditional data frame in R.</p>
+<p>A <code>tibble</code> is a data structure in R, part of the tidyverse ecosystem, that is designed to make data manipulation and analysis easier and more consistent. It is an enhanced and modern alternative to the traditional data frame in R.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -179,8 +160,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #   whitney_count_to_year &lt;dbl&gt;, artist_race_nwi &lt;chr&gt;</code></pre>
 </div>
 </div>
-<p>Remove irrelevant columns for prediction:</p>
-<p><strong>artist_name</strong> because the artist’s name itself might not be a strong predictor.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List of columns to be removed</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>columns_to_remove <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
@@ -207,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #   artist_race_nwi &lt;chr&gt;</code></pre>
 </div>
 </div>
-<p>Here we are transforming logical columns to factors with specific levels and character columns to factors in a data.</p>
+<p>Removing irrelevant columns for prediction: <code>artist_name</code> because the artist’s name itself might not be a strong predictor.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>artists <span class="ot">&lt;-</span> artists <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert logical columns to factors with levels 'TRUE' and 'FALSE'.</span></span>
@@ -216,6 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert character columns to factors.</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), factor))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Here we will transform logical columns to factors with specific levels and character columns to factors in a data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(artists)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -261,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                                        </code></pre>
 </div>
 </div>
-<p>Handling missing values:</p>
+<p>Checking for missing values:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values in the dataset</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(artists))</span>
@@ -307,14 +287,13 @@ space_ratio_per_page_total           artist_unique_id
 </div>
 </section>
 <section id="decision-trees" class="level2">
-<h2 class="anchored" data-anchor-id="decision-trees"><strong>Decision Trees</strong></h2>
-<p>A decision tree is a tree-like structure that represents a series of decisions and their possible consequences.</p>
+<h2 class="anchored" data-anchor-id="decision-trees">Decision Trees</h2>
 <p>Recursive Partitioning (similar to CART) uses the Gini index to make splitting decisions and early stopping (pre-pruning).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="create-tree-with-default-settings-uses-pre-pruning" class="level3">
-<h3 class="anchored" data-anchor-id="create-tree-with-default-settings-uses-pre-pruning"><strong>Create Tree With Default Settings (uses pre-pruning)</strong></h3>
+<h3 class="anchored" data-anchor-id="create-tree-with-default-settings-uses-pre-pruning">Create Tree With Default Settings (uses pre-pruning)</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a decision tree with default settings</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>tree_default <span class="ot">&lt;-</span> artists <span class="sc">|&gt;</span> </span>
@@ -337,8 +316,7 @@ node), split, n, loss, yval, (yprob)
      7) year&gt;=1988.5 847    0 Janson (0.0000000 1.0000000) *</code></pre>
 </div>
 </div>
-<p>Here we are trying to predict whether a particular artist is included in Janson’s History of Art or Gardner’s Art Through the Ages.</p>
-<p>Plotting</p>
+<p>Here we will try to predict whether a particular artist is included in Janson’s History of Art or Gardner’s Art Through the Ages.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(tree_default, <span class="at">extra =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -346,11 +324,9 @@ node), split, n, loss, yval, (yprob)
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>This decision tree predicts the book (“Gardner” or “Janson”) based on the features in the dataset. The tree splits the data into subsets based on specific conditions related to <strong>edition_number</strong> and <strong>year</strong>.</p>
 </section>
 <section id="create-a-full-tree" class="level3">
-<h3 class="anchored" data-anchor-id="create-a-full-tree"><strong>Create a Full Tree</strong></h3>
-<p>To create a full tree, we set the complexity parameter cp to 0 (split even if it does not improve the tree) and we set the minimum number of observations in a node needed to split to the smallest value of 2.</p>
+<h3 class="anchored" data-anchor-id="create-a-full-tree">Create a Full Tree</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a decision tree</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>tree_full <span class="ot">&lt;-</span> artists <span class="sc">|&gt;</span> </span>
@@ -364,7 +340,7 @@ node), split, n, loss, yval, (yprob)
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>When <strong>cp = 0</strong> This means that no cost complexity pruning is applied. In other words, the tree is allowed to grow until it perfectly fits the training data, which can result in a very complex, deep, and overfit tree.</p>
+<p>When <code>cp = 0</code>This means that no cost complexity pruning is applied. In other words, the tree is allowed to grow until it perfectly fits the training data, which can result in a very complex, deep, and overfit tree.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tree_full</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -384,8 +360,7 @@ node), split, n, loss, yval, (yprob)
      7) year&gt;=1988.5 847    0 Janson (0.0000000 1.0000000) *</code></pre>
 </div>
 </div>
-<p>Training error on tree with pre-pruning</p>
-<p>Here we are making predictions using a decision tree model (<strong>tree_default</strong>) on the <strong>artists</strong> data frame</p>
+<p>Training error on tree with pre-pruning Here we are making predictions using a decision tree model (<code>tree_default</code>) on the <code>artists</code> data frame</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict book using the decision tree model</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(tree_default, artists ) <span class="sc">|&gt;</span> <span class="fu">head</span> ()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -400,7 +375,6 @@ node), split, n, loss, yval, (yprob)
 </div>
 </div>
 <p>Predicts the book for each record in the ‘artists’ dataset, which is either “Gardner” (1) or “Janson” (0).</p>
-<p>By specifying <strong>type = “class”</strong>, you obtain the class labels that the decision tree model predicts for each observation in the <strong>artists</strong> data frame.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict class labels (Gardner or Janson)</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(tree_default, artists , <span class="at">type=</span><span class="st">"class"</span>)</span>
@@ -411,6 +385,7 @@ Gardner Gardner Gardner Gardner Gardner Gardner
 Levels: Gardner Janson</code></pre>
 </div>
 </div>
+<p>By specifying <code>type = "class"</code>, you obtain the class labels that the decision tree model predicts for each observation in the <code>artists</code> data frame.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>confusion_table <span class="ot">&lt;-</span> <span class="fu">with</span>(artists, <span class="fu">table</span>(book , pred))</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>confusion_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -421,7 +396,7 @@ book      Gardner Janson
   Janson        0   1219</code></pre>
 </div>
 </div>
-<p>The model correctly predicted “Gardner” 1885 times (True Positives) and “Janson” 1219 times (True Negatives). There were no False Positives or False Negatives</p>
+<p>The model correctly predicted “Gardner” 1885 times (True Positives) and “Janson” 1219 times (True Negatives). There were <code>no False Positives or False Negatives</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the total number of correct predictions</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>correct <span class="ot">&lt;-</span> confusion_table <span class="sc">|&gt;</span> <span class="fu">diag</span>() <span class="sc">|&gt;</span> <span class="fu">sum</span>()</span>
@@ -445,7 +420,7 @@ book      Gardner Janson
 <pre><code>[1] 1</code></pre>
 </div>
 </div>
-<p>Use a function for accuracy</p>
+<p>Using a function for accuracy</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="cf">function</span>(truth, prediction) {</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    tbl <span class="ot">&lt;-</span> <span class="fu">table</span>(truth, prediction)</span>
@@ -467,8 +442,8 @@ book      Gardner Janson
 </div>
 </section>
 <section id="make-predictions-for-new-data" class="level3">
-<h3 class="anchored" data-anchor-id="make-predictions-for-new-data"><strong>Make Predictions for New Data</strong></h3>
-<p>Make up my own artist: Artsist in year 2020 with edition number 17.</p>
+<h3 class="anchored" data-anchor-id="make-predictions-for-new-data">Make Predictions for New Data</h3>
+<p>Making our own artist: Artist in year 2020 with edition number 17.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>my_artist <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">edition_number =</span> <span class="dv">17</span> ,<span class="at">year=</span> <span class="dv">2020</span>,<span class="at">artist_nationality =</span> <span class="st">"American"</span>,<span class="at">artist_nationality_other =</span> <span class="st">"Other"</span>,<span class="at">artist_gender =</span> <span class="st">"Female"</span>,<span class="at">artist_race =</span> <span class="st">"Black or African American"</span>,<span class="at">artist_ethnicity =</span> <span class="st">"Not Hispanic or Latino origin"</span>, <span class="at">book =</span> <span class="cn">NA</span>, <span class="at">space_ratio_per_page_total =</span> <span class="fl">0.5344869907</span>,<span class="at">artist_unique_id =</span> <span class="dv">10</span>,<span class="at">moma_count_to_year =</span> <span class="dv">15</span>,<span class="at">whitney_count_to_year =</span> <span class="dv">5</span>,<span class="at">artist_race_nwi =</span> <span class="st">"Non-White"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -501,8 +476,8 @@ Levels: Gardner Janson</code></pre>
 </section>
 </section>
 <section id="model-evaluation-with-caret" class="level2">
-<h2 class="anchored" data-anchor-id="model-evaluation-with-caret"><strong>Model Evaluation with Caret</strong></h2>
-<p>The package <strong>caret</strong> makes preparing training sets, building classification (and regression) models and evaluation easier.</p>
+<h2 class="anchored" data-anchor-id="model-evaluation-with-caret">Model Evaluation with Caret</h2>
+<p>The package <code>caret</code> makes preparing training sets, building classification (and regression) models and evaluation easier.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -511,7 +486,7 @@ Levels: Gardner Janson</code></pre>
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="hold-out-test-data" class="level3">
-<h3 class="anchored" data-anchor-id="hold-out-test-data"><strong>Hold out Test Data</strong></h3>
+<h3 class="anchored" data-anchor-id="hold-out-test-data">Hold out Test Data</h3>
 <p>Test data is not used in the model building process and set aside purely for testing the model. Here, we partition data the 80% training and 20% testing.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data partition</span></span>
@@ -526,8 +501,8 @@ Levels: Gardner Janson</code></pre>
 </div>
 </section>
 <section id="learn-a-model-and-tune-hyperparameters-on-the-training-data" class="level3">
-<h3 class="anchored" data-anchor-id="learn-a-model-and-tune-hyperparameters-on-the-training-data"><strong>Learn a Model and Tune Hyperparameters on the Training Data</strong></h3>
-<p>The package caret combines training and validation for hyperparameter tuning into a single function called train(). It internally splits the data into training and validation sets and thus will provide you with error estimates for different hyperparameter settings.</p>
+<h3 class="anchored" data-anchor-id="learn-a-model-and-tune-hyperparameters-on-the-training-data">Learn a Model and Tune Hyperparameters on the Training Data</h3>
+<p>The package caret combines training and validation for <code>hyperparameter</code> tuning into a single function called <code>train()</code>. It internally splits the data into training and validation sets and thus will provide you with error estimates for different hyperparameter settings.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -561,7 +536,7 @@ Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was cp = 0.</code></pre>
 </div>
 </div>
-<p>In this case, the model with <strong>cp = 0</strong> was selected as the final model due to its perfect accuracy on the training data.</p>
+<p>In this case, the model with <code>cp = 0</code> was selected as the final model due to its perfect accuracy on the training data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>,</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">box.palette =</span> <span class="fu">list</span>(<span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -643,7 +618,7 @@ artist_nationalityCzech                   0.00</code></pre>
 </section>
 </section>
 <section id="testing-confusion-matrix-and-confidence-interval-for-accuracy" class="level2">
-<h2 class="anchored" data-anchor-id="testing-confusion-matrix-and-confidence-interval-for-accuracy"><strong>Testing: Confusion Matrix and Confidence Interval for Accuracy</strong></h2>
+<h2 class="anchored" data-anchor-id="testing-confusion-matrix-and-confidence-interval-for-accuracy">Testing: Confusion Matrix and Confidence Interval for Accuracy</h2>
 <p>Use the best model on the test data</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on test data</span></span>
@@ -683,11 +658,11 @@ Prediction Gardner Janson
                                      </code></pre>
 </div>
 </div>
-<p>The accuracy is 1.0,Sensitivity (True Positive Rate) and Specificity (True Negative Rate) are also both 1.0, indicating perfect performance.</p>
+<p>The accuracy is <code>1.0</code>,Sensitivity (True Positive Rate) and Specificity (True Negative Rate) are also both <code>1.0</code>, indicating perfect performance.</p>
 </section>
 <section id="model-comparison" class="level2">
-<h2 class="anchored" data-anchor-id="model-comparison"><strong>Model Comparison</strong></h2>
-<p>We will compare decision trees with a k-nearest neighbors (kNN) classifier. We will create fixed sampling scheme (10-folds) so we compare the different models using exactly the same folds. It is specified as <code>trControl</code> during training.</p>
+<h2 class="anchored" data-anchor-id="model-comparison">Model Comparison</h2>
+<p>We will compare decision trees with a <code>k-nearest neighbors (kNN)</code> classifier. We will create fixed sampling scheme (10-folds) so we compare the different models using exactly the same folds. It is specified as <code>trControl</code> during training.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create cross-validation folds</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(artists_train<span class="sc">$</span>book, <span class="at">k =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -794,13 +769,13 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 </div>
 </section>
 <section id="feature-selection-and-feature-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="feature-selection-and-feature-preparation"><strong>Feature Selection and Feature Preparation</strong></h2>
+<h2 class="anchored" data-anchor-id="feature-selection-and-feature-preparation">Feature Selection and Feature Preparation</h2>
 <p>Decision trees implicitly select features for splitting, but we can also select features manually.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FSelector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="univariate-feature-importance-score" class="level3">
-<h3 class="anchored" data-anchor-id="univariate-feature-importance-score"><strong>Univariate Feature Importance Score</strong></h3>
+<h3 class="anchored" data-anchor-id="univariate-feature-importance-score">Univariate Feature Importance Score</h3>
 <p>These scores measure how related each feature is to the class variable. For discrete features (as in our case), the chi-square statistic can be used to derive a score.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> artists_train<span class="sc">|&gt;</span> </span>
@@ -827,8 +802,7 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 12 whitney_count_to_year               0     </code></pre>
 </div>
 </div>
-<p>Provides insight into the importance of each feature in predicting the “book” categories and can help in feature selection or understanding which features are most relevant in the classification task.</p>
-<p>plot importance in descending order (using reorder to order factor levels used by ggplot).</p>
+<p>Provides insight into the importance of each feature in predicting the <code>book</code> categories and can help in feature selection or understanding which features are most relevant in the classification task.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(weights,</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> attr_importance, <span class="at">y =</span> <span class="fu">reorder</span>(feature, attr_importance))) <span class="sc">+</span></span>
@@ -839,8 +813,7 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>‘year’ has the highest importance score , indicating that it is a significant predictor and ‘edition_number’ follows with a relatively high importance score.</p>
-<p>Get the 5 best features</p>
+<p><code>year</code> has the highest importance score , indicating that it is a significant predictor and ‘edition_number’ follows with a relatively high importance score.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> <span class="fu">cutoff.k</span>(weights <span class="sc">|&gt;</span> </span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">column_to_rownames</span>(<span class="st">"feature"</span>), <span class="dv">5</span>)</span>
@@ -851,14 +824,14 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 [5] "artist_race"               </code></pre>
 </div>
 </div>
-<p>Use only the best 5 features to build a model (<code>Fselector</code> provides <code>as.simple.formula</code>)</p>
+<p>Getting the 5 best features Use only the best 5 features to build a model (<code>Fselector</code> provides <code>as.simple.formula</code>)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">as.simple.formula</span>(subset, <span class="st">"book"</span>)</span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>book ~ year + edition_number + space_ratio_per_page_total + artist_nationality + 
     artist_race
-&lt;environment: 0x12949e828&gt;</code></pre>
+&lt;environment: 0x146c28be0&gt;</code></pre>
 </div>
 </div>
 <p>“year,” “edition_number,” “space_ratio_per_page_total,” “artist_nationality,” and “artist_race.” are used as predictors in the modeling or analysis of the “book” variable.</p>
@@ -892,10 +865,9 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 12 whitney_count_to_year             0       </code></pre>
 </div>
 </div>
-<p><strong>gain.ratio</strong> function calculates the gain ratio for each predictor variable.</p>
 </section>
 <section id="feature-subset-selection" class="level3">
-<h3 class="anchored" data-anchor-id="feature-subset-selection"><strong>Feature Subset Selection</strong></h3>
+<h3 class="anchored" data-anchor-id="feature-subset-selection">Feature Subset Selection</h3>
 <p>Often features are related and calculating importance for each feature independently is not optimal.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>artists_train <span class="sc">|&gt;</span> </span>
@@ -904,8 +876,8 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 <pre><code>[1] "edition_number" "year"          </code></pre>
 </div>
 </div>
-<p>“<strong>edition_number</strong>” and “<strong>year</strong>” are the two predictor variables selected by the CFS method.</p>
-<p>Black-box feature selection uses an evaluator function (the black box) to calculate a score to be maximized. First, we define an evaluation function that builds a model given a subset of features and calculates a quality score.</p>
+<p><code>edition_number</code> and <code>year</code> are the two predictor variables selected by the CFS method.</p>
+<p><code>Black</code>-box feature selection uses an evaluator function (the black box) to calculate a score to be maximized. We define an evaluation function that builds a model given a subset of features and calculates a quality score.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>evaluator <span class="ot">&lt;-</span> <span class="cf">function</span>(subset) {</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">&lt;-</span> artists_train<span class="sc">|&gt;</span> </span>
@@ -926,7 +898,7 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 </div>
 </section>
 <section id="using-dummy-variables-for-factors" class="level3">
-<h3 class="anchored" data-anchor-id="using-dummy-variables-for-factors"><strong>Using Dummy Variables for Factors</strong></h3>
+<h3 class="anchored" data-anchor-id="using-dummy-variables-for-factors">Using Dummy Variables for Factors</h3>
 <p>Nominal features (factors) are often encoded as a series of 0-1 dummy variables. First we use the original encoding of type as a factor with several values.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>tree_predator <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> </span>
@@ -1004,7 +976,7 @@ Tuning parameter 'cp' was held constant at a value of 0.01</code></pre>
 </section>
 </section>
 <section id="class-imbalance" class="level2">
-<h2 class="anchored" data-anchor-id="class-imbalance"><strong>Class Imbalance</strong></h2>
+<h2 class="anchored" data-anchor-id="class-imbalance">Class Imbalance</h2>
 <p>Classifiers have a hard time to learn from data where we have much more observations for one class (called the majority class). This is called the class imbalance problem.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
@@ -1027,7 +999,7 @@ Tuning parameter 'cp' was held constant at a value of 0.01</code></pre>
 <span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>testing_artists <span class="ot">&lt;-</span> artists <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="sc">-</span>inTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="option-1-use-the-data-as-is-and-hope-for-the-best" class="level3">
-<h3 class="anchored" data-anchor-id="option-1-use-the-data-as-is-and-hope-for-the-best"><strong>Option 1: Use the Data As Is and Hope For The Best</strong></h3>
+<h3 class="anchored" data-anchor-id="option-1-use-the-data-as-is-and-hope-for-the-best">Option 1: Use the Data As Is and Hope For The Best</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_artists <span class="sc">|&gt;</span> </span>
 <span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1099,7 +1071,7 @@ Prediction Gardner Janson
 </div>
 </section>
 <section id="option-2-balance-data-with-resampling" class="level3">
-<h3 class="anchored" data-anchor-id="option-2-balance-data-with-resampling"><strong>Option 2: Balance Data With Resampling</strong></h3>
+<h3 class="anchored" data-anchor-id="option-2-balance-data-with-resampling">Option 2: Balance Data With Resampling</h3>
 <p>We use stratified sampling with replacement (to oversample the minority/positive class).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sampling)</span>
@@ -1185,7 +1157,7 @@ Prediction Gardner Janson
                                      </code></pre>
 </div>
 </div>
-<p>Here “Accuracy” is 1, indicating perfect accuracy.</p>
+<p>Here <code>Accuracy</code> is 1, indicating perfect accuracy.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">strata</span>(training_artists, <span class="at">stratanames =</span> <span class="st">"book"</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>), <span class="at">method =</span> <span class="st">"srswr"</span>)</span>
 <span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>training_artists_balanced <span class="ot">&lt;-</span> training_artists <span class="sc">|&gt;</span> </span>
@@ -1239,7 +1211,7 @@ Prediction Gardner Janson
 </div>
 </section>
 <section id="option-3-build-a-larger-tree-and-use-predicted-probabilities" class="level3">
-<h3 class="anchored" data-anchor-id="option-3-build-a-larger-tree-and-use-predicted-probabilities"><strong>Option 3: Build A Larger Tree and use Predicted Probabilities</strong></h3>
+<h3 class="anchored" data-anchor-id="option-3-build-a-larger-tree-and-use-predicted-probabilities">Option 3: Build A Larger Tree and use Predicted Probabilities</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_artists <span class="sc">|&gt;</span> </span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1399,7 +1371,7 @@ Area under the curve: 1</code></pre>
 </section>
 </section>
 <section id="option-4-use-a-cost-sensitive-classifier" class="level3">
-<h3 class="anchored" data-anchor-id="option-4-use-a-cost-sensitive-classifier"><strong>Option 4: Use a Cost-Sensitive Classifier</strong></h3>
+<h3 class="anchored" data-anchor-id="option-4-use-a-cost-sensitive-classifier">Option 4: Use a Cost-Sensitive Classifier</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>cost <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
 <span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">1</span>,</span>
@@ -1420,7 +1392,7 @@ Area under the curve: 1</code></pre>
 <span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">parms =</span> <span class="fu">list</span>(<span class="at">loss =</span> cost),</span>
 <span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <strong>loss</strong> parameter is used to specify the misclassification costs for different classes.</p>
+<p>The <code>loss</code> parameter is used to specify the error costs for different classes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1494,9 +1466,9 @@ Prediction Gardner Janson
 </section>
 </section>
 <section id="classification-alternative-techniques" class="level1">
-<h1><strong>Classification: Alternative Techniques</strong></h1>
+<h1>Classification: Alternative Techniques</h1>
 <section id="install-packages-1" class="level2">
-<h2 class="anchored" data-anchor-id="install-packages-1"><strong>Install packages</strong></h2>
+<h2 class="anchored" data-anchor-id="install-packages-1">Install packages</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(pacman))</span>
 <span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
@@ -1529,8 +1501,8 @@ Prediction Gardner Janson
 </div>
 </section>
 <section id="training-and-test-data" class="level2">
-<h2 class="anchored" data-anchor-id="training-and-test-data"><strong>Training and Test Data</strong></h2>
-<p>We will continue using artists data set:</p>
+<h2 class="anchored" data-anchor-id="training-and-test-data">Training and Test Data</h2>
+<p>We will use artists data set:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>artists <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(artists)</span>
 <span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a>artists <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1552,7 +1524,6 @@ $ whitney_count_to_year      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 $ artist_race_nwi            &lt;fct&gt; Non-White, Non-White, Non-White, Non-White,…</code></pre>
 </div>
 </div>
-<p>Test data is not used in the model building process and needs to be set aside purely for testing the model after it is completely built. Here I use 80% for training.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
 <span id="cb137-2"><a href="#cb137-2" aria-hidden="true" tabindex="-1"></a>inTrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(<span class="at">y =</span> artists<span class="sc">$</span>book, <span class="at">p =</span> .<span class="dv">8</span>)[[<span class="dv">1</span>]]</span>
@@ -1566,7 +1537,7 @@ $ artist_race_nwi            &lt;fct&gt; Non-White, Non-White, Non-White, Non-Wh
 <div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(artists_train<span class="sc">$</span>book, <span class="at">k =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="conditional-inference-tree-decision-tree" class="level3">
-<h3 class="anchored" data-anchor-id="conditional-inference-tree-decision-tree"><strong>Conditional Inference Tree (Decision Tree)</strong></h3>
+<h3 class="anchored" data-anchor-id="conditional-inference-tree-decision-tree">Conditional Inference Tree (Decision Tree)</h3>
 <p>Conditional Inference Trees is a different kind of decision tree that uses recursive partitioning of dependent variables based on the value of correlations.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>ctreeFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1604,10 +1575,10 @@ The final value used for the model was mincriterion = 0.99.</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-92-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The conditional inference tree model performed very well in terms of accuracy and kappa, and the hyperparameter “mincriterion” was set to 0.99 to achieve this level of performance.</p>
+<p>The conditional inference tree model performed very well in terms of accuracy and kappa, and the hyperparameter <code>mincriterion</code> was set to 0.99 to achieve this level of performance.</p>
 </section>
 <section id="c-4.5-decision-tree" class="level3">
-<h3 class="anchored" data-anchor-id="c-4.5-decision-tree"><strong>C 4.5 Decision Tree</strong></h3>
+<h3 class="anchored" data-anchor-id="c-4.5-decision-tree">C 4.5 Decision Tree</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a C4.5-like decision tree (J48) classification model</span></span>
 <span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>C45Fit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1659,7 +1630,7 @@ Accuracy was used to select the optimal model using the largest value.
 The final values used for the model were C = 0.01 and M = 1.</code></pre>
 </div>
 </div>
-<p>The model with the highest Accuracy value was selected as the optimal model.The final values used for the model were <strong>C = 0.01</strong> and <strong>M = 1</strong>.</p>
+<p>The model with the highest Accuracy value was selected as the optimal model.The final values used for the model were <code>C = 0.01</code> and <code>M = 1</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>C45Fit<span class="sc">$</span>finalModel</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1682,7 +1653,7 @@ Size of the tree :  9</code></pre>
 </div>
 </section>
 <section id="k-nearest-neighbors" class="level3">
-<h3 class="anchored" data-anchor-id="k-nearest-neighbors"><strong>K-Nearest Neighbors</strong></h3>
+<h3 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a k-Nearest Neighbors (k-NN) classification model</span></span>
 <span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>knnFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1733,8 +1704,8 @@ Gardner  Janson
 </div>
 </section>
 <section id="part-rule-based-classifier" class="level3">
-<h3 class="anchored" data-anchor-id="part-rule-based-classifier"><strong>PART (Rule-based classifier)</strong></h3>
-<p>PART stands for “Partial C 4.5,” and it is an extension of the well-known C4.5 decision tree algorithm. PART is designed for classification tasks and is particularly useful when dealing with datasets that contain missing values or noisy data.</p>
+<h3 class="anchored" data-anchor-id="part-rule-based-classifier">PART (Rule-based classifier)</h3>
+<p>PART stands for <code>Partial C 4.5</code> and it is an extension of the well-known C4.5 decision tree algorithm. PART is designed for classification tasks and is particularly useful when dealing with datasets that contain missing values or noisy data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a rule-based classification model using the PART algorithm</span></span>
 <span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a>rulesFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1792,8 +1763,8 @@ Number of Rules  :  5</code></pre>
 </div>
 </section>
 <section id="linear-support-vector-machines" class="level3">
-<h3 class="anchored" data-anchor-id="linear-support-vector-machines"><strong>Linear Support Vector Machines</strong></h3>
-<p>A Linear Support Vector Machine (Linear SVM) is a supervised machine learning algorithm used for classification and regression tasks. It is a variant of the traditional Support Vector Machine (SVM) algorithm that focuses on finding a linear decision boundary to separate data into different classes.</p>
+<h3 class="anchored" data-anchor-id="linear-support-vector-machines">Linear Support Vector Machines</h3>
+<p>A <code>Linear Support Vector Machine</code> (Linear SVM) is a supervised machine learning algorithm used for classification and regression tasks. It is a variant of the <code>traditional Support Vector Machine</code> (SVM) algorithm that focuses on finding a linear decision boundary to separate data into different classes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a Support Vector Machine (SVM) classification model with a linear kernel</span></span>
 <span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>svmFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span>.,</span>
@@ -1838,8 +1809,7 @@ Training error : 0 </code></pre>
 </div>
 </section>
 <section id="random-forest" class="level3">
-<h3 class="anchored" data-anchor-id="random-forest"><strong>Random Forest</strong></h3>
-<p>Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that operates by constructing a multitude of decision trees at training time.</p>
+<h3 class="anchored" data-anchor-id="random-forest">Random Forest</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a Random Forest classification model</span></span>
 <span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a>randomForestFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1871,6 +1841,7 @@ Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was mtry = 19.</code></pre>
 </div>
 </div>
+<p>Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that operates by constructing a multitude of decision trees at training time.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a>randomForestFit<span class="sc">$</span>finalModel</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1890,8 +1861,7 @@ Janson        0    976           0</code></pre>
 </div>
 </section>
 <section id="gradient-boosted-decision-trees-xgboost" class="level3">
-<h3 class="anchored" data-anchor-id="gradient-boosted-decision-trees-xgboost"><strong>Gradient Boosted Decision Trees (xgboost)</strong></h3>
-<p>Gradient-boosted decision trees are a popular method for solving prediction problems in both classification and regression domains. The approach improves the learning process by simplifying the objective and reducing the number of iterations to get to a sufficiently optimal solution.</p>
+<h3 class="anchored" data-anchor-id="gradient-boosted-decision-trees-xgboost">Gradient Boosted Decision Trees (xgboost)</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a classification model using the XGBoost algorithm</span></span>
 <span id="cb162-2"><a href="#cb162-2" aria-hidden="true" tabindex="-1"></a>xgboostFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
@@ -1960,9 +1930,10 @@ param :
     list()</code></pre>
 </div>
 </div>
+<p>Gradient-boosted decision trees are a popular method for addressing prediction problems in the regression and classification domains. The strategy improves learning by simplifying the objective and reducing the number of iterations required to arrive at a properly optimal solution.</p>
 </section>
 <section id="artificial-neural-network" class="level3">
-<h3 class="anchored" data-anchor-id="artificial-neural-network"><strong>Artificial Neural Network</strong></h3>
+<h3 class="anchored" data-anchor-id="artificial-neural-network">Artificial Neural Network</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>nnetFit <span class="ot">&lt;-</span> artists_train <span class="sc">|&gt;</span> <span class="fu">train</span>(book <span class="sc">~</span> .,</span>
 <span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"nnet"</span>,</span>
@@ -2027,7 +1998,6 @@ options were - entropy fitting  decay=0.01</code></pre>
 </section>
 <section id="comparing-models" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-models"><strong>Comparing Models</strong></h2>
-<p>Collect the performance metrics from the models trained on the same data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>resamps <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(</span>
 <span id="cb170-2"><a href="#cb170-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ctree =</span> ctreeFit,</span>
@@ -2053,6 +2023,7 @@ Performance metrics: Accuracy, Kappa
 Time estimates for: everything, final model fit </code></pre>
 </div>
 </div>
+<p>Note: To collect the performance metrics from the models trained on the same data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(resamps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2093,8 +2064,8 @@ NeuralNet    0.613   0.657  0.717 0.720   0.737 0.983    0</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-109-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>For the “CART” model, the accuracy values range from a minimum of 1.000 to a maximum of 1.000, indicating high performance.</p>
-<p>For the “kNearestNeighbors” (k-NN) model, the accuracy values are slightly lower, with 0.961, which means the k-NN model is slightly less accurate on average compared to CART.</p>
+<p>For the <code>CART</code> model, the accuracy values range from a minimum of 1.000 to a maximum of 1.000, indicating high performance.</p>
+<p>For the <code>kNearestNeighbors</code> (k-NN) model, the accuracy values are slightly lower, with 0.961, which means the k-NN model is slightly less accurate on average compared to CART.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb175"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a>difs <span class="ot">&lt;-</span> <span class="fu">diff</span>(resamps)</span>
 <span id="cb175-2"><a href="#cb175-2" aria-hidden="true" tabindex="-1"></a>difs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2164,11 +2135,10 @@ NeuralNet    0.000310           </code></pre>
 <p>The small p-values for both Accuracy and Kappa comparisons mean that there is a significant difference in performance between the CART and k-NN models.</p>
 </section>
 <section id="applying-the-chosen-model-to-the-test-data" class="level2">
-<h2 class="anchored" data-anchor-id="applying-the-chosen-model-to-the-test-data"><strong>Applying the Chosen Model to the Test Data</strong></h2>
+<h2 class="anchored" data-anchor-id="applying-the-chosen-model-to-the-test-data">Applying the Chosen Model to the Test Data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgboostFit, artists_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Calculate the confusion matrix for the held-out test data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb180"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pr, <span class="at">reference =</span> artists_test<span class="sc">$</span>book)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2203,8 +2173,7 @@ Prediction Gardner Janson
 </div>
 </section>
 <section id="comparing-decision-boundaries-of-popular-classification-techniques" class="level2">
-<h2 class="anchored" data-anchor-id="comparing-decision-boundaries-of-popular-classification-techniques"><strong>Comparing Decision Boundaries of Popular Classification Techniques</strong></h2>
-<p>Classifiers create decision boundaries to discriminate between classes. Different classifiers are able to create different shapes of decision boundaries (e.g., some are strictly linear) and thus some classifiers may perform better for certain datasets.</p>
+<h2 class="anchored" data-anchor-id="comparing-decision-boundaries-of-popular-classification-techniques">Comparing Decision Boundaries of Popular Classification Techniques</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
 <span id="cb182-2"><a href="#cb182-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -2277,14 +2246,15 @@ Prediction Gardner Janson
 <span id="cb182-69"><a href="#cb182-69" aria-hidden="true" tabindex="-1"></a>     <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
 <span id="cb182-70"><a href="#cb182-70" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>To differentiate between classes, classifiers generate decision boundaries. Certain classifiers may work better for particular datasets because different classifiers can provide decision boundaries with varying geometries (some are completely linear, for example).</p>
 <section id="the-artist-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="the-artist-dataset"><strong>The Artist Dataset</strong></h3>
-<p>We will continue using same dataset and will be using edition_number, year and book as parameters.</p>
+<h3 class="anchored" data-anchor-id="the-artist-dataset">The Artist Dataset</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb183"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Three classes </span></span>
 <span id="cb183-2"><a href="#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="do">### (note: MASS also has a select function which hides dplyr's select)</span></span>
 <span id="cb183-3"><a href="#cb183-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> artists <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(edition_number, year, book)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We’re going to stick with the same dataset and use <code>edition_number</code>, <code>year</code>, and <code>book</code> as our parameters.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb184"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb184-1"><a href="#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x, <span class="fu">aes</span>(<span class="at">x =</span> edition_number, <span class="at">y =</span> year, <span class="at">fill =</span> book)) <span class="sc">+</span>  </span>
 <span id="cb184-2"><a href="#cb184-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_2d</span>(<span class="at">geom =</span> <span class="st">"polygon"</span>, <span class="fu">aes</span>(<span class="at">alpha =</span> <span class="fu">after_stat</span>(level))) <span class="sc">+</span></span>
@@ -2300,7 +2270,6 @@ Prediction Gardner Janson
 </div>
 <section id="k-nearest-neighbors-classifier" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors-classifier">K-Nearest Neighbors Classifier</h4>
-<p>set the number of nearest neighbors to 1</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb185"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb185-1"><a href="#cb185-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> caret<span class="sc">::</span><span class="fu">knn3</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">k =</span> <span class="dv">1</span>)</span>
 <span id="cb185-2"><a href="#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2313,7 +2282,7 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-117-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>set the number of nearest neighbors to 3</p>
+<p>set the number of nearest neighbors to 1</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> caret<span class="sc">::</span><span class="fu">knn3</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">k =</span> <span class="dv">3</span>)</span>
 <span id="cb186-2"><a href="#cb186-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2326,7 +2295,7 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-118-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>set the number of nearest neighbors to 9</p>
+<p>set the number of nearest neighbors to 3</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> caret<span class="sc">::</span><span class="fu">knn3</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">k =</span> <span class="dv">9</span>)</span>
 <span id="cb187-2"><a href="#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2339,6 +2308,7 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-119-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>set the number of nearest neighbors to 9</p>
 </section>
 <section id="naive-bayes-classifier" class="level4">
 <h4 class="anchored" data-anchor-id="naive-bayes-classifier">Naive Bayes Classifier</h4>
@@ -2358,7 +2328,6 @@ Prediction Gardner Janson
 </section>
 <section id="linear-discriminant-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="linear-discriminant-analysis">Linear Discriminant Analysis</h4>
-<p>Linear Discriminant Analysis (LDA) is a supervised learning algorithm used for classification tasks in machine learning. It is a technique used to find a linear combination of features that best separates the classes in a dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb189"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> MASS<span class="sc">::</span><span class="fu">lda</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _)</span>
 <span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2371,10 +2340,10 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-121-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Linear Discriminant Analysis (LDA) is a supervised learning algorithm used for classification tasks in machine learning. It is a technique used to find a linear combination of features that best separates the classes in a dataset.</p>
 </section>
 <section id="multinomial-logistic-regression-implemented-in-nnet" class="level4">
 <h4 class="anchored" data-anchor-id="multinomial-logistic-regression-implemented-in-nnet">Multinomial Logistic Regression (implemented in nnet)</h4>
-<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb190"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb190-1"><a href="#cb190-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> nnet<span class="sc">::</span><span class="fu">multinom</span>(book <span class="sc">~</span>., <span class="at">data =</span> _)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2394,6 +2363,7 @@ final  value 8.635503
 stopped after 100 iterations</code></pre>
 </div>
 </div>
+<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
 <span id="cb192-2"><a href="#cb192-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Multinomial Logistic Regression"</span>,</span>
@@ -2420,7 +2390,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-124-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p><strong><code>cp</code></strong> (complexity parameter) is set to 0.001, which controls the trade-off between model complexity and accuracy. A lower <strong><code>cp</code></strong> value results in a more complex tree. <strong><code>minsplit</code></strong> sets the minimum number of observations required to split a node.</p>
+<p><code>cp</code> (complexity parameter) is set to 0.001, which controls the trade-off between model complexity and accuracy. A lower <code>cp</code> value results in a more complex tree. <code>minsplit</code> sets the minimum number of observations required to split a node.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb194"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb194-1"><a href="#cb194-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> rpart<span class="sc">::</span><span class="fu">rpart</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _,</span>
 <span id="cb194-2"><a href="#cb194-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="fl">0.001</span>, <span class="at">minsplit =</span> <span class="dv">1</span>))</span>
@@ -2461,7 +2431,6 @@ stopped after 100 iterations</code></pre>
 </section>
 <section id="svm" class="level4">
 <h4 class="anchored" data-anchor-id="svm">SVM</h4>
-<p>SVM algorithms are very effective as we try to find the maximum separating hyperplane between the different classes available in the target feature.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> e1071<span class="sc">::</span><span class="fu">svm</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">kernel =</span> <span class="st">"linear"</span>)</span>
 <span id="cb197-2"><a href="#cb197-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2474,6 +2443,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-128-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>SVM algorithms are very effective as we try to find the maximum separating hyperplane between the different classes available in the target feature.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb198"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb198-1"><a href="#cb198-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> e1071<span class="sc">::</span><span class="fu">svm</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">kernel =</span> <span class="st">"radial"</span>)</span>
 <span id="cb198-2"><a href="#cb198-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2552,7 +2522,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-134-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p><strong><code>size</code></strong> specifies that the neural network should have how many hidden neurons in a single hidden layer.</p>
+<p><code>size</code> specifies that the neural network should have how many hidden neurons in a single hidden layer.</p>
 </section>
 </section>
 </section>
