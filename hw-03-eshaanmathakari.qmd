@@ -813,6 +813,8 @@ knnFit
 ```{r}
 knnFit$finalModel
 ```
+For each k value from 1 to 10, the accuracy and Kappa statistics is given. The best k value is chosen based on the highest accuracy, and in this case, the best k is 1 (k = 1) due it's highest value.
+
 
 ### PART (Rule-based classifier)
 
@@ -827,10 +829,13 @@ rulesFit <- artists_train |> train(book ~ .,
   trControl = trainControl(method = "cv", indexOut = train_index))
 rulesFit
 ```
+We have included the accuracy and Kappa statistics for each combination of `threshold` and `pruned` settings. Here, it is 1 in every circumstance. The model's final values were pruned = yes and threshold = 0.5.
 
 ```{r}
 rulesFit$finalModel
 ```
+This decision list serves as a classification tool and offers guidelines for grouping instances into classes.
+
 
 ### Linear Support Vector Machines
 
@@ -849,6 +854,7 @@ svmFit
 ```{r}
 svmFit$finalModel
 ```
+Training error: 0 indicates that the training error for the SVM model is 0, meaning the model perfectly fits the training data.
 
 ### Random Forest
 
@@ -867,6 +873,8 @@ Random forests or random decision forests is an ensemble learning method for cla
 ```{r}
 randomForestFit$finalModel
 ```
+The number of predictors chosen at random to split a node in a Random Forest tree is indicated by the `mtry` parameter. Based on the highest accuracy, the best `mtry` value was chosen; in this instance, that number is 19. With just one incorrect classification, class `Gardner` had an extremely low error rate of about 0.000663; in contrast, class `Janson` properly classified every occurrence.
+
 
 ### Gradient Boosted Decision Trees (xgboost)
 
@@ -888,12 +896,11 @@ xgboostFit <- artists_train |> train(book ~ .,
   ))
 xgboostFit
 ```
-
+Gradient-boosted decision trees are a popular method for addressing prediction problems in the regression and classification domains. The strategy improves learning by simplifying the objective and reducing the number of iterations required to arrive at a properly optimal solution.
 ```{r}
 xgboostFit$finalModel
 ```
-
-Gradient-boosted decision trees are a popular method for addressing prediction problems in the regression and classification domains. The strategy improves learning by simplifying the objective and reducing the number of iterations required to arrive at a properly optimal solution.
+The results indicate that the model achieved very high accuracy (0.998) and Kappa (0.995).
 
 ### Artificial Neural Network
 
@@ -906,10 +913,13 @@ nnetFit <- artists_train |> train(book ~ .,
   trace = FALSE)
 nnetFit
 ```
+During hyperparameter tuning, several combinations of `size` and `decay` values are explored to see which combination yields the greatest model performance. The ideal model was chosen using accuracy, and the model's final values are size = 7 and decay = 0.01.
 
 ```{r}
 nnetFit$finalModel
 ```
+Output provides a detailed summary of the neural network architecture, the input features, the output etc.
+
 
 ## **Comparing Models**
 
@@ -932,6 +942,7 @@ Note: To collect the performance metrics from the models trained on the same dat
 ```{r}
 summary(resamps)
 ```
+The accuracy values range from 0.819 to 1.00 and Kappa values ranges from 0.648 to 1.000, showing majority of models are performing well.
 
 ```{r}
 library(lattice)
@@ -962,6 +973,7 @@ pr <- predict(xgboostFit, artists_test)
 ```{r}
 confusionMatrix(pr, reference = artists_test$book)
 ```
+Calculating a confusion matrix for the held-out test data.
 
 ## Comparing Decision Boundaries of Popular Classification Techniques
 
@@ -1009,9 +1021,7 @@ decisionplot <- function(model, data, class_var,
     if(!is.na(predict_type[2]))
       try(prob <- predict(model, g, type = predict_type[2]))
   
-  # we visualize the difference in probability/score between the 
-  # winning class and the second best class.
-  # don't use probability if predict for the classifier does not support it.
+
   max_prob <- 1
   if(!is.null(prob))
     try({
@@ -1060,6 +1070,8 @@ ggplot(x, aes(x = edition_number, y = year, fill = book)) +
        fill = "Book",
        alpha = "Density")
 ```
+Plotting the link between `year` and `edition_number` is done using different colours to indicate the "book." Transparency is used to highlight denser areas.
+
 
 #### K-Nearest Neighbors Classifier
 
@@ -1111,9 +1123,11 @@ decisionplot(model, x, class_var = "book",
        shape = "Book",
        fill = "Prediction") 
 ```
+Naive Bayes is a classification technique that is based on Bayes' Theorem with an assumption that all the features that predicts the target value are independent of each other. 
+The plot displays the decision boundaries of the Naive Bayes classifier.
+
 
 #### Linear Discriminant Analysis
-
 ```{r}
 model <- x |> MASS::lda(book ~ ., data = _)
 decisionplot(model, x, class_var = "book") + 
@@ -1125,14 +1139,15 @@ decisionplot(model, x, class_var = "book") +
 ```
 
 Linear Discriminant Analysis (LDA) is a supervised learning algorithm used for classification tasks in machine learning. It is a technique used to find a linear combination of features that best separates the classes in a dataset.
+The plot displays the decision boundaries of the LDA classifier. It shows how the classifier predicts the class of data points based on their features
+
 
 #### Multinomial Logistic Regression (implemented in nnet)
 
 ```{r}
 model <- x |> nnet::multinom(book ~., data = _)
 ```
-
-Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
+The use of logistic regression to situations involving more than two classes is known as multinomial logistic regression.The output provides details about the optimisation iterations, including the initial value, values that decrease iteratively, and the converged value at the end. It also shows that after 100 iterations, the optimisation process was stopped.
 
 ```{r}
 decisionplot(model, x, class_var = "book") + 
@@ -1142,6 +1157,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+The plot show the decision boundaries and how the model separates or classifies data points into different classes.
 
 #### Decision Trees
 
@@ -1167,6 +1183,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+Parameter (cp = 0.001) and a minimum split of 1 (minsplit = 1) can cause overfitting, but it's not showing much changes in the plot.
 
 ```{r}
 model <- x |> C50::C5.0(book ~ ., data = _)
@@ -1177,6 +1194,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+The decision plot typically shows the decision boundaries and how the C5.0 model categorizes different data points.
 
 ```{r}
 model <- x |> randomForest::randomForest(book ~ ., data = _)
@@ -1187,6 +1205,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+The decision plot typically shows the decision boundaries and how the Random Forest model categorizes different data points.
 
 #### SVM
 
@@ -1211,6 +1230,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+The plot based on the SVM model with a linear kernel. Here linear kernel is more suitable.
 
 ```{r}
 model <- x |> e1071::svm(book ~ ., data = _, kernel = "polynomial")
@@ -1221,6 +1241,7 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+The `radial` kernel is a non-linear kernel and is suitable for capturing complex patterns in the data.
 
 ```{r}
 model <- x |> e1071::svm(book ~ ., data = _, kernel = "sigmoid")
@@ -1231,6 +1252,9 @@ decisionplot(model, x, class_var = "book") +
        shape = "Book",
        fill = "Prediction")
 ```
+
+The `polynomial` kernel is a non-linear kernel that works well for non-linear classification jobs because it can identify intricate patterns in the data.When data correlations are non-linear and may show intricate patterns, sigmoid kernels might be helpful.
+
 
 #### Single Layer Feed-forward Neural Networks
 
