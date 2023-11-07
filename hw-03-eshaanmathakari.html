@@ -831,7 +831,7 @@ kNearestNeighbors 1.852e-05                  </code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>book ~ year + edition_number + space_ratio_per_page_total + artist_nationality + 
     artist_race
-&lt;environment: 0x111fe68a8&gt;</code></pre>
+&lt;environment: 0x131d778f0&gt;</code></pre>
 </div>
 </div>
 <p>“year,” “edition_number,” “space_ratio_per_page_total,” “artist_nationality,” and “artist_race.” are used as predictors in the modeling or analysis of the “book” variable.</p>
@@ -1702,6 +1702,7 @@ Gardner  Janson
    1508     976 </code></pre>
 </div>
 </div>
+<p>For each k value from 1 to 10, the accuracy and Kappa statistics is given. The best k value is chosen based on the highest accuracy, and in this case, the best k is 1 (k = 1) due it’s highest value.</p>
 </section>
 <section id="part-rule-based-classifier" class="level3">
 <h3 class="anchored" data-anchor-id="part-rule-based-classifier">PART (Rule-based classifier)</h3>
@@ -1742,6 +1743,7 @@ Accuracy was used to select the optimal model using the largest value.
 The final values used for the model were threshold = 0.5 and pruned = yes.</code></pre>
 </div>
 </div>
+<p>We have included the accuracy and Kappa statistics for each combination of <code>threshold</code> and <code>pruned</code> settings. Here, it is 1 in every circumstance. The model’s final values were pruned = yes and threshold = 0.5.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>rulesFit<span class="sc">$</span>finalModel</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1761,6 +1763,7 @@ year &gt; 1948: Janson (294.0)
 Number of Rules  :  5</code></pre>
 </div>
 </div>
+<p>This decision list serves as a classification tool and offers guidelines for grouping instances into classes.</p>
 </section>
 <section id="linear-support-vector-machines" class="level3">
 <h3 class="anchored" data-anchor-id="linear-support-vector-machines">Linear Support Vector Machines</h3>
@@ -1807,6 +1810,7 @@ Objective Function Value : -0.237
 Training error : 0 </code></pre>
 </div>
 </div>
+<p>Training error: 0 indicates that the training error for the SVM model is 0, meaning the model perfectly fits the training data.</p>
 </section>
 <section id="random-forest" class="level3">
 <h3 class="anchored" data-anchor-id="random-forest">Random Forest</h3>
@@ -1859,6 +1863,7 @@ Gardner    1508      0           0
 Janson        0    976           0</code></pre>
 </div>
 </div>
+<p>The number of predictors chosen at random to split a node in a Random Forest tree is indicated by the <code>mtry</code> parameter. Based on the highest accuracy, the best <code>mtry</code> value was chosen; in this instance, that number is 19. With just one incorrect classification, class <code>Gardner</code> had an extremely low error rate of about 0.000663; in contrast, class <code>Janson</code> properly classified every occurrence.</p>
 </section>
 <section id="gradient-boosted-decision-trees-xgboost" class="level3">
 <h3 class="anchored" data-anchor-id="gradient-boosted-decision-trees-xgboost">Gradient Boosted Decision Trees (xgboost)</h3>
@@ -1901,6 +1906,7 @@ Tuning parameter 'subsample' was held
  constant at a value of 0.5</code></pre>
 </div>
 </div>
+<p>Gradient-boosted decision trees are a popular method for addressing prediction problems in the regression and classification domains. The strategy improves learning by simplifying the objective and reducing the number of iterations required to arrive at a properly optimal solution.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a>xgboostFit<span class="sc">$</span>finalModel</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1930,7 +1936,7 @@ param :
     list()</code></pre>
 </div>
 </div>
-<p>Gradient-boosted decision trees are a popular method for addressing prediction problems in the regression and classification domains. The strategy improves learning by simplifying the objective and reducing the number of iterations required to arrive at a properly optimal solution.</p>
+<p>The results indicate that the model achieved very high accuracy (0.998) and Kappa (0.995).</p>
 </section>
 <section id="artificial-neural-network" class="level3">
 <h3 class="anchored" data-anchor-id="artificial-neural-network">Artificial Neural Network</h3>
@@ -1985,6 +1991,7 @@ Accuracy was used to select the optimal model using the largest value.
 The final values used for the model were size = 9 and decay = 0.01.</code></pre>
 </div>
 </div>
+<p>During hyperparameter tuning, several combinations of <code>size</code> and <code>decay</code> values are explored to see which combination yields the greatest model performance. The ideal model was chosen using accuracy, and the model’s final values are size = 7 and decay = 0.01.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a>nnetFit<span class="sc">$</span>finalModel</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1994,6 +2001,7 @@ output(s): .outcome
 options were - entropy fitting  decay=0.01</code></pre>
 </div>
 </div>
+<p>Output provides a detailed summary of the neural network architecture, the input features, the output etc.</p>
 </section>
 </section>
 <section id="comparing-models" class="level2">
@@ -2057,6 +2065,7 @@ xgboost      0.992   0.992  1.000 0.997   1.000 1.000    0
 NeuralNet    0.613   0.657  0.717 0.720   0.737 0.983    0</code></pre>
 </div>
 </div>
+<p>The accuracy values range from 0.819 to 1.00 and Kappa values ranges from 0.648 to 1.000, showing majority of models are performing well.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
 <span id="cb174-2"><a href="#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bwplot</span>(resamps, <span class="at">layout =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2171,6 +2180,7 @@ Prediction Gardner Janson
                                     </code></pre>
 </div>
 </div>
+<p>Calculating a confusion matrix for the held-out test data.</p>
 </section>
 <section id="comparing-decision-boundaries-of-popular-classification-techniques" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-decision-boundaries-of-popular-classification-techniques">Comparing Decision Boundaries of Popular Classification Techniques</h2>
@@ -2218,33 +2228,31 @@ Prediction Gardner Janson
 <span id="cb182-41"><a href="#cb182-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(predict_type[<span class="dv">2</span>]))</span>
 <span id="cb182-42"><a href="#cb182-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">try</span>(prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, g, <span class="at">type =</span> predict_type[<span class="dv">2</span>]))</span>
 <span id="cb182-43"><a href="#cb182-43" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb182-44"><a href="#cb182-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we visualize the difference in probability/score between the </span></span>
-<span id="cb182-45"><a href="#cb182-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># winning class and the second best class.</span></span>
-<span id="cb182-46"><a href="#cb182-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># don't use probability if predict for the classifier does not support it.</span></span>
-<span id="cb182-47"><a href="#cb182-47" aria-hidden="true" tabindex="-1"></a>  max_prob <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb182-48"><a href="#cb182-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(prob))</span>
-<span id="cb182-49"><a href="#cb182-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">try</span>({</span>
-<span id="cb182-50"><a href="#cb182-50" aria-hidden="true" tabindex="-1"></a>      max_prob <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(prob, <span class="at">MARGIN =</span> <span class="dv">1</span>, sort, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb182-51"><a href="#cb182-51" aria-hidden="true" tabindex="-1"></a>      max_prob <span class="ot">&lt;-</span> max_prob[,<span class="dv">1</span>] <span class="sc">-</span> max_prob[,<span class="dv">2</span>]</span>
-<span id="cb182-52"><a href="#cb182-52" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">silent =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb182-44"><a href="#cb182-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb182-45"><a href="#cb182-45" aria-hidden="true" tabindex="-1"></a>  max_prob <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb182-46"><a href="#cb182-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(prob))</span>
+<span id="cb182-47"><a href="#cb182-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">try</span>({</span>
+<span id="cb182-48"><a href="#cb182-48" aria-hidden="true" tabindex="-1"></a>      max_prob <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(prob, <span class="at">MARGIN =</span> <span class="dv">1</span>, sort, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb182-49"><a href="#cb182-49" aria-hidden="true" tabindex="-1"></a>      max_prob <span class="ot">&lt;-</span> max_prob[,<span class="dv">1</span>] <span class="sc">-</span> max_prob[,<span class="dv">2</span>]</span>
+<span id="cb182-50"><a href="#cb182-50" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">silent =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb182-51"><a href="#cb182-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb182-52"><a href="#cb182-52" aria-hidden="true" tabindex="-1"></a>  cl <span class="ot">&lt;-</span> <span class="fu">factor</span>(cl, <span class="at">levels =</span> <span class="fu">levels</span>(y))</span>
 <span id="cb182-53"><a href="#cb182-53" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb182-54"><a href="#cb182-54" aria-hidden="true" tabindex="-1"></a>  cl <span class="ot">&lt;-</span> <span class="fu">factor</span>(cl, <span class="at">levels =</span> <span class="fu">levels</span>(y))</span>
+<span id="cb182-54"><a href="#cb182-54" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> g <span class="sc">|&gt;</span> <span class="fu">add_column</span>(<span class="at">prediction =</span> cl, <span class="at">probability =</span> max_prob)</span>
 <span id="cb182-55"><a href="#cb182-55" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb182-56"><a href="#cb182-56" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> g <span class="sc">|&gt;</span> <span class="fu">add_column</span>(<span class="at">prediction =</span> cl, <span class="at">probability =</span> max_prob)</span>
-<span id="cb182-57"><a href="#cb182-57" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb182-58"><a href="#cb182-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(g, <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
-<span id="cb182-59"><a href="#cb182-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> .data[[<span class="fu">colnames</span>(g)[<span class="dv">1</span>]]], <span class="at">y =</span> .data[[<span class="fu">colnames</span>(g)[<span class="dv">2</span>]]])) <span class="sc">+</span></span>
-<span id="cb182-60"><a href="#cb182-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_raster</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> prediction, <span class="at">alpha =</span> probability)) <span class="sc">+</span></span>
-<span id="cb182-61"><a href="#cb182-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_contour</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">z =</span> <span class="fu">as.numeric</span>(prediction)), </span>
-<span id="cb182-62"><a href="#cb182-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">bins =</span> <span class="fu">length</span>(<span class="fu">levels</span>(cl)), <span class="at">linewidth =</span> .<span class="dv">5</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb182-63"><a href="#cb182-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> data, <span class="at">mapping =</span>  <span class="fu">aes</span>(</span>
-<span id="cb182-64"><a href="#cb182-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> .data[[<span class="fu">colnames</span>(data)[<span class="dv">1</span>]]], </span>
-<span id="cb182-65"><a href="#cb182-65" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> .data[[<span class="fu">colnames</span>(data)[<span class="dv">2</span>]]],</span>
-<span id="cb182-66"><a href="#cb182-66" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> .data[[class_var]]), <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span> </span>
-<span id="cb182-67"><a href="#cb182-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_alpha_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span>  </span>
-<span id="cb182-68"><a href="#cb182-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Training accuracy:"</span>, <span class="fu">round</span>(acc, <span class="dv">2</span>))) <span class="sc">+</span></span>
-<span id="cb182-69"><a href="#cb182-69" aria-hidden="true" tabindex="-1"></a>     <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
-<span id="cb182-70"><a href="#cb182-70" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb182-56"><a href="#cb182-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(g, <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb182-57"><a href="#cb182-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> .data[[<span class="fu">colnames</span>(g)[<span class="dv">1</span>]]], <span class="at">y =</span> .data[[<span class="fu">colnames</span>(g)[<span class="dv">2</span>]]])) <span class="sc">+</span></span>
+<span id="cb182-58"><a href="#cb182-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_raster</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> prediction, <span class="at">alpha =</span> probability)) <span class="sc">+</span></span>
+<span id="cb182-59"><a href="#cb182-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_contour</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">z =</span> <span class="fu">as.numeric</span>(prediction)), </span>
+<span id="cb182-60"><a href="#cb182-60" aria-hidden="true" tabindex="-1"></a>      <span class="at">bins =</span> <span class="fu">length</span>(<span class="fu">levels</span>(cl)), <span class="at">linewidth =</span> .<span class="dv">5</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb182-61"><a href="#cb182-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> data, <span class="at">mapping =</span>  <span class="fu">aes</span>(</span>
+<span id="cb182-62"><a href="#cb182-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> .data[[<span class="fu">colnames</span>(data)[<span class="dv">1</span>]]], </span>
+<span id="cb182-63"><a href="#cb182-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> .data[[<span class="fu">colnames</span>(data)[<span class="dv">2</span>]]],</span>
+<span id="cb182-64"><a href="#cb182-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> .data[[class_var]]), <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span> </span>
+<span id="cb182-65"><a href="#cb182-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_alpha_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span>  </span>
+<span id="cb182-66"><a href="#cb182-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Training accuracy:"</span>, <span class="fu">round</span>(acc, <span class="dv">2</span>))) <span class="sc">+</span></span>
+<span id="cb182-67"><a href="#cb182-67" aria-hidden="true" tabindex="-1"></a>     <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb182-68"><a href="#cb182-68" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To differentiate between classes, classifiers generate decision boundaries. Certain classifiers may work better for particular datasets because different classifiers can provide decision boundaries with varying geometries (some are completely linear, for example).</p>
 <section id="the-artist-dataset" class="level3">
@@ -2268,6 +2276,7 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-116-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Plotting the link between <code>year</code> and <code>edition_number</code> is done using different colours to indicate the “book.” Transparency is used to highlight denser areas.</p>
 <section id="k-nearest-neighbors-classifier" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors-classifier">K-Nearest Neighbors Classifier</h4>
 <div class="cell">
@@ -2325,6 +2334,7 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-120-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Naive Bayes is a classification technique that is based on Bayes’ Theorem with an assumption that all the features that predicts the target value are independent of each other.&nbsp; The plot displays the decision boundaries of the Naive Bayes classifier.</p>
 </section>
 <section id="linear-discriminant-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="linear-discriminant-analysis">Linear Discriminant Analysis</h4>
@@ -2340,7 +2350,7 @@ Prediction Gardner Janson
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-121-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Linear Discriminant Analysis (LDA) is a supervised learning algorithm used for classification tasks in machine learning. It is a technique used to find a linear combination of features that best separates the classes in a dataset.</p>
+<p>Linear Discriminant Analysis (LDA) is a supervised learning algorithm used for classification tasks in machine learning. It is a technique used to find a linear combination of features that best separates the classes in a dataset. The plot displays the decision boundaries of the LDA classifier. It shows how the classifier predicts the class of data points based on their features</p>
 </section>
 <section id="multinomial-logistic-regression-implemented-in-nnet" class="level4">
 <h4 class="anchored" data-anchor-id="multinomial-logistic-regression-implemented-in-nnet">Multinomial Logistic Regression (implemented in nnet)</h4>
@@ -2363,7 +2373,7 @@ final  value 8.635503
 stopped after 100 iterations</code></pre>
 </div>
 </div>
-<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
+<p>The use of logistic regression to situations involving more than two classes is known as multinomial logistic regression.The output provides details about the optimisation iterations, including the initial value, values that decrease iteratively, and the converged value at the end. It also shows that after 100 iterations, the optimisation process was stopped.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
 <span id="cb192-2"><a href="#cb192-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Multinomial Logistic Regression"</span>,</span>
@@ -2375,6 +2385,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-123-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The plot show the decision boundaries and how the model separates or classifies data points into different classes.</p>
 </section>
 <section id="decision-trees-1" class="level4">
 <h4 class="anchored" data-anchor-id="decision-trees-1">Decision Trees</h4>
@@ -2404,6 +2415,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-125-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Parameter (cp = 0.001) and a minimum split of 1 (minsplit = 1) can cause overfitting, but it’s not showing much changes in the plot.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> C50<span class="sc">::</span><span class="fu">C5.0</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _)</span>
 <span id="cb195-2"><a href="#cb195-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2416,6 +2428,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-126-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The decision plot typically shows the decision boundaries and how the C5.0 model categorizes different data points.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb196"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> randomForest<span class="sc">::</span><span class="fu">randomForest</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _)</span>
 <span id="cb196-2"><a href="#cb196-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2428,6 +2441,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-127-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The decision plot typically shows the decision boundaries and how the Random Forest model categorizes different data points.</p>
 </section>
 <section id="svm" class="level4">
 <h4 class="anchored" data-anchor-id="svm">SVM</h4>
@@ -2456,6 +2470,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-129-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The plot based on the SVM model with a linear kernel. Here linear kernel is more suitable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> e1071<span class="sc">::</span><span class="fu">svm</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">kernel =</span> <span class="st">"polynomial"</span>)</span>
 <span id="cb199-2"><a href="#cb199-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2468,6 +2483,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-130-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The <code>radial</code> kernel is a non-linear kernel and is suitable for capturing complex patterns in the data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb200"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">|&gt;</span> e1071<span class="sc">::</span><span class="fu">svm</span>(book <span class="sc">~</span> ., <span class="at">data =</span> _, <span class="at">kernel =</span> <span class="st">"sigmoid"</span>)</span>
 <span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">class_var =</span> <span class="st">"book"</span>) <span class="sc">+</span> </span>
@@ -2480,6 +2496,7 @@ stopped after 100 iterations</code></pre>
 <p><img src="hw-03-eshaanmathakari_files/figure-html/unnamed-chunk-131-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The <code>polynomial</code> kernel is a non-linear kernel that works well for non-linear classification jobs because it can identify intricate patterns in the data.When data correlations are non-linear and may show intricate patterns, sigmoid kernels might be helpful.</p>
 </section>
 <section id="single-layer-feed-forward-neural-networks" class="level4">
 <h4 class="anchored" data-anchor-id="single-layer-feed-forward-neural-networks">Single Layer Feed-forward Neural Networks</h4>
